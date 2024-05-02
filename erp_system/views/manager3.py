@@ -3,9 +3,11 @@ from erp_system.serializers.manager3 import filialSerializer, filial_productSeri
 from erp_system.models.manager3 import filial, filial_product
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
+from erp_system.all_permissions import Manager3Permissions
 
 
 class filialViewSet(viewsets.ModelViewSet):
+    permission_classes = [Manager3Permissions]
     queryset = filial.objects.all()
     serializer_class = filialSerializer
 
@@ -22,6 +24,7 @@ class CustomPagination(PageNumberPagination):
 
 
 class filial_productViewSet(viewsets.ModelViewSet):
+    permission_classes = [Manager3Permissions]
     queryset = filial_product.objects.all()
     serializer_class = filial_productSerializer
 
