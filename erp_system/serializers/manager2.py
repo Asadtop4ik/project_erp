@@ -9,7 +9,7 @@ class brandSerializer(serializers.ModelSerializer):
 
 
 class warehouse_productSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(write_only=True)
+    image = serializers.ImageField()
 
     class Meta:
         model = warehouse_product

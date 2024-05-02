@@ -3,13 +3,14 @@ from erp_system.serializers.manager1 import productSerializer
 from erp_system.models.manager1 import product
 from rest_framework.pagination import PageNumberPagination
 from erp_system.all_permissions import Manager1Permissions
-
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
 
 
 class productViewSet(viewsets.ModelViewSet):
+    parser_classes = (MultiPartParser, FormParser,)
     permission_classes = [Manager1Permissions]
     queryset = product.objects.all()
     serializer_class = productSerializer

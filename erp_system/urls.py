@@ -7,7 +7,7 @@ from .replenish_stock import admin_replenish_stock
 
 router = routers.DefaultRouter()
 router.register(r'manager1/products', productViewSet)
-router.register(r'manager2/brands', brandViewSet)
+router.register(r'manager2/brand', brandViewSet)
 router.register(r'manager2/warehouse_products', warehouse_productViewSet)
 router.register(r'manager3/filial', filialViewSet)
 router.register(r'manager3/filial_products', filial_productViewSet)

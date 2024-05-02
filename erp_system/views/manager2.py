@@ -3,6 +3,7 @@ from erp_system.serializers.manager2 import brandSerializer, warehouse_productSe
 from erp_system.models.manager2 import brand, warehouse_product
 from rest_framework.pagination import PageNumberPagination
 from erp_system.all_permissions import Manager2Permissions
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class brandViewSet(viewsets.ModelViewSet):
@@ -16,6 +17,7 @@ class CustomPagination(PageNumberPagination):
 
 
 class warehouse_productViewSet(viewsets.ModelViewSet):
+    parser_classes = (MultiPartParser, FormParser,)
     permission_classes = [Manager2Permissions]
     queryset = warehouse_product.objects.all()
     serializer_class = warehouse_productSerializer

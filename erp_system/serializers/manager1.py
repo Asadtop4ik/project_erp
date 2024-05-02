@@ -3,8 +3,9 @@ from erp_system.models.manager1 import product
 
 
 class productSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(write_only=True)
+    background_img = serializers.ImageField()
 
     class Meta:
         model = product
         fields = '__all__'
+
