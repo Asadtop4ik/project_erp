@@ -4,6 +4,8 @@ from erp_system.models.manager1 import product
 from rest_framework.pagination import PageNumberPagination
 from erp_system.all_permissions import Manager1Permissions
 from rest_framework.parsers import MultiPartParser, FormParser
+from django_filters import rest_framework as django_filters
+from erp_system.filters import Manager1Filter
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
@@ -16,6 +18,9 @@ class productViewSet(viewsets.ModelViewSet):
     serializer_class = productSerializer
 
     pagination_class = CustomPagination
+    filter_backends = (filter.SearchFilter, django_filters.DjangoFilterBackend)
+    filterset_class = Manager1Filter
+    search_fields = ('name', 'description')
 
     def list(self, request, *args, **kwargs):
         brand = request.query_params.get('brand', None)
