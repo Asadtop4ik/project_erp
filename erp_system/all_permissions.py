@@ -29,3 +29,13 @@ class Manager3Permissions(permissions.BasePermission):
                 request.user.is_authenticated and request.user.is_staff and
                 request.user.has_perm('erp_system.view_filial')
         )
+
+
+class CashierPermissions(permissions.BasePermission):
+    required_group = 'Cashier'
+
+    def has_permission(self, request, view):
+        return (
+                request.user.is_authenticated and request.user.is_staff and
+                request.user.has_perm('erp_system.view_customer')
+        )

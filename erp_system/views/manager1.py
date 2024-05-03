@@ -7,6 +7,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters import rest_framework as django_filters
 from erp_system.filters import Manager1Filter
 
+
 class CustomPagination(PageNumberPagination):
     page_size = 10
 

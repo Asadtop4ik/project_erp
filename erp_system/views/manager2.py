@@ -2,10 +2,11 @@ from django_filters import rest_framework as django_filters
 from rest_framework import viewsets
 from erp_system.serializers.manager2 import brandSerializer, warehouse_productSerializer
 from erp_system.models.manager2 import brand, warehouse_product
-from rest_framework.pagination import PageNumberPagination
 from erp_system.all_permissions import Manager2Permissions
 from rest_framework.parsers import MultiPartParser, FormParser
 from erp_system.filters import Manager2Filter
+from .manager1 import CustomPagination
+
 
 class brandViewSet(viewsets.ModelViewSet):
     permission_classes = [Manager2Permissions]
@@ -13,17 +14,13 @@ class brandViewSet(viewsets.ModelViewSet):
     serializer_class = brandSerializer
 
 
-class CustomPagination(PageNumberPagination):
-    page_size = 10
-
-
+@CustomPagination.page_size
 class warehouse_productViewSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, FormParser,)
     permission_classes = [Manager2Permissions]
     queryset = warehouse_product.objects.all()
     serializer_class = warehouse_productSerializer
 
-    pagination_class = CustomPagination
     filter_backends = (filter.SearchFilter, django_filters.DjangoFilterBackend)
     filterset_class = Manager2Filter
     search_fields = ['name', 'description']

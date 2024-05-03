@@ -20,3 +20,4 @@ class Manager3Filter(django_filters.FilterSet):
     class Meta:
         model = filial_product
         fields = ['filial']
+
