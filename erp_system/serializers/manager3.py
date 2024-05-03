@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from erp_system.models.manager3 import filial, filial_product
 from erp_system.models.manager2 import warehouse_product
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class filialSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,25 +15,27 @@ class filial_productSerializer(serializers.ModelSerializer):
         model = filial_product
         fields = '__all__'
 
-        def validate_quantity(self, value):
-            try:
-                product_id = self.initial_data['product']
-                product = warehouse_product.objects.get(id=product_id)
+    def validate_quantity(self, value):
+        try:
+            # Fetch the product instance from the database
+            product_id = self.initial_data['warehouse_product_id']
+            product = warehouse_product.objects.get(id=product_id)
 
-                if value > product.stock:
-                    raise serializers.ValidationError("Not enough stock")
+            # Check the stock
+            if value > product.stock:
+                raise serializers.ValidationError("Not enough items in stock.")
 
-                if value < 1:
-                    raise serializers.ValidationError("Quantity must be greater than 1")
+            if value < 1:
+                raise serializers.ValidationError("Quantity must be at least 1.")
 
-                return value
+            return value
 
-            except warehouse_product.DoesNotExist:
-                raise serializers.ValidationError("Product does not exist")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Product does not exist")
 
-        def create(self, validated_data):
-            count = filial_product.objects.create(**validated_data)
-            product = count.product
-            product.stock -= count.quantity
-            product.save()
-            return count
+    def create(self, validated_data):
+        count = filial_product.objects.create(**validated_data)
+        product = count.warehouse_product_id
+        product.stock -= count.quantity
+        product.save()
+        return count

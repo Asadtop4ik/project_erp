@@ -13,7 +13,7 @@ class filial(models.Model):
 
 class filial_product(models.Model):
     filial = models.ForeignKey(filial, on_delete=models.CASCADE)
-    product = models.ForeignKey(warehouse_product, on_delete=models.CASCADE)
+    warehouse_product_id = models.ForeignKey(warehouse_product, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(default=0)
 
     def __str__(self):
