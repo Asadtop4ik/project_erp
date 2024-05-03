@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from erp_system.models.cashier import customer
 from erp_system.serializers.cashier import customerSerializer, story_productSerializer
 from .manager2 import CustomPagination
@@ -15,13 +15,13 @@ class customerViewSet(viewsets.ModelViewSet):
     serializer_class = customerSerializer
 
 
-@CustomPagination.page_size
 class story_productViewSet(viewsets.ModelViewSet):
     permission_classes = [CashierPermissions]
     parser_classes = (MultiPartParser, FormParser,)
     queryset = warehouse_product.objects.all()
     serializer_class = story_productSerializer
 
-    filter_backends = (filter.SearchFilter, django_filters.DjangoFilterBackend)
+    pagination_class = CustomPagination
+    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
     filterset_class = Manager2Filter
     search_fields = ['name', 'description', 'brand']

@@ -1,5 +1,5 @@
 from django_filters import rest_framework as django_filters
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from erp_system.serializers.manager2 import brandSerializer, warehouse_productSerializer
 from erp_system.models.manager2 import brand, warehouse_product
 from erp_system.all_permissions import Manager2Permissions
@@ -14,14 +14,14 @@ class brandViewSet(viewsets.ModelViewSet):
     serializer_class = brandSerializer
 
 
-@CustomPagination.page_size
 class warehouse_productViewSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, FormParser,)
     permission_classes = [Manager2Permissions]
     queryset = warehouse_product.objects.all()
     serializer_class = warehouse_productSerializer
 
-    filter_backends = (filter.SearchFilter, django_filters.DjangoFilterBackend)
+    pagination_class = CustomPagination
+    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
     filterset_class = Manager2Filter
     search_fields = ['name', 'description']
 

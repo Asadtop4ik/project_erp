@@ -1,4 +1,4 @@
-from rest_framework import viewsets, response
+from rest_framework import viewsets, response, filters
 from erp_system.serializers.manager3 import filialSerializer, filial_productSerializer
 from erp_system.models.manager3 import filial, filial_product
 from rest_framework.decorators import action
@@ -21,13 +21,13 @@ class filialViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data)
 
 
-@CustomPagination.page_size
 class filial_productViewSet(viewsets.ModelViewSet):
     permission_classes = [Manager3Permissions]
     queryset = filial_product.objects.all()
     serializer_class = filial_productSerializer
 
-    filter_backends = (filter.SearchFilter, django_filters.DjangoFilterBackend)
+    pagination_class = CustomPagination
+    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
     filterset_class = Manager3Filter
     search_fields = ['product__name', 'filial__name']
 
