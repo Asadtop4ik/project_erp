@@ -13,7 +13,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
 class JWTSchemaGenerator(OpenAPISchemaGenerator):
     def get_security_definitions(self):
         security_definitions = super().get_security_definitions()

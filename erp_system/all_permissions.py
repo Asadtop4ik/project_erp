@@ -7,7 +7,7 @@ class Manager1Permissions(permissions.BasePermission):
     def has_permission(self, request, view):
         return (
                 request.user.is_authenticated and request.user.is_staff and
-                request.user.has_perm('erp_system.view_product')
+                request.user.groups.filter(name=self.required_group).exists()
         )
 
 
@@ -17,7 +17,7 @@ class Manager2Permissions(permissions.BasePermission):
     def has_permission(self, request, view):
         return (
                 request.user.is_authenticated and request.user.is_staff and
-                request.user.has_perm('erp_system.view_brand')
+                request.user.groups.filter(name=self.required_group).exists()
         )
 
 
@@ -27,15 +27,6 @@ class Manager3Permissions(permissions.BasePermission):
     def has_permission(self, request, view):
         return (
                 request.user.is_authenticated and request.user.is_staff and
-                request.user.has_perm('erp_system.view_filial')
+                request.user.groups.filter(name=self.required_group).exists()
         )
 
-
-class CashierPermissions(permissions.BasePermission):
-    required_group = 'Cashier'
-
-    def has_permission(self, request, view):
-        return (
-                request.user.is_authenticated and request.user.is_staff and
-                request.user.has_perm('erp_system.view_customer')
-        )
