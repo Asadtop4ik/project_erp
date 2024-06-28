@@ -23,6 +23,12 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_superuser=True.'))
         return self.create_user(username, password, **extra_fields)
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if self.password:
+                self.set_password(self.password)
+        super().save(*args, **kwargs)
+
 
 class CustomUser(AbstractUser, PermissionsMixin):
     ADMIN = 'admin'
@@ -47,12 +53,6 @@ class CustomUser(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            if self.password:
-                self.set_password(self.password)
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.username
